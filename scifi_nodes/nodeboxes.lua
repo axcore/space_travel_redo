@@ -190,9 +190,11 @@ minetest.register_node("scifi_nodes:pad", {
 				"scifi_nodes_tp_part.png" --texture
 			)
 			minetest.after(1, function()
-				local ppos = clicker:getpos()
+--				local ppos = clicker:getpos()
+				local ppos = clicker:get_pos()
 				if minetest.get_node({x=ppos.x, y=ppos.y, z=ppos.z}).name == "scifi_nodes:pad" then
-					clicker:setpos(position2)
+--					clicker:setpos(position2)
+					clicker:set_pos(position2)
 				end
 				local objs = minetest.get_objects_inside_radius(pos, 3)
 				for _, obj in pairs(objs) do
@@ -224,9 +226,11 @@ minetest.register_node("scifi_nodes:pad", {
 				"scifi_nodes_tp_part.png" --texture
 			)
 			minetest.after(1, function()
-				local ppos = clicker:getpos()
+--				local ppos = clicker:getpos()
+				local ppos = clicker:get_pos()
 				if minetest.get_node({x=ppos.x, y=ppos.y, z=ppos.z}).name == "scifi_nodes:pad" then
-					clicker:setpos(position1)
+--					clicker:setpos(position1)
+					clicker:set_pos(position1)
 				end
 				local objs = minetest.get_objects_inside_radius(pos, 3)
                 for _, obj in pairs(objs) do

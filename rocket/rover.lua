@@ -32,6 +32,7 @@ end
 
 -- Rover entity
 
+--[[
 local rover = {
 	physical = true,
 	collide_with_objects = true,
@@ -48,7 +49,25 @@ local rover = {
 	last_v = 0,
 	removed = false,
 }
-
+]]--
+local rover = {
+    initial_properties = {
+        physical = true,
+        collide_with_objects = true,
+        --collisionbox = {-0.7, 0.4, -0.7, 0.7, 1.0, 0.7},
+        --collisionbox = {-1.6, 0.0, -1.0, 1.4, 3.0, 3.5},
+        collisionbox = {-1.0, 0.0, -1.0, 1.0, 3.0, 1.0},
+        visual = "mesh",
+        mesh = "rover.obj",
+        visual_size = {x = 1.0, y = 1.0, z = 1.0},
+        textures = {"rover.png"},
+        stepheight = 0,
+    },
+	driver = nil,
+	v = 0,
+	last_v = 0,
+	removed = false,
+}
 
 -- Rover item
 
@@ -72,7 +91,8 @@ minetest.register_craftitem("rocket:rover", {
 			under.y = under.y + 1.5 --0.5
 			local rover = minetest.add_entity(under, "rocket:rover")
 			if rover then
-				rover:setyaw(placer:get_look_horizontal())
+--				rover:setyaw(placer:get_look_horizontal())
+				rover:set_yaw(placer:get_look_horizontal())
 				if not minetest.settings:get_bool("creative_mode") then
 					itemstack:take_item()
 				end
@@ -118,7 +138,8 @@ function rover:on_rightclick(clicker)
 		minetest.after(0.2, function()
 			default.player_set_animation(clicker, "sit" , 30)
 		end)
-		clicker:set_look_horizontal(self.object:getyaw())
+--		clicker:set_look_horizontal(self.object:getyaw())
+		clicker:set_look_horizontal(self.object:get_yaw())
 	end
 end
 
@@ -155,7 +176,8 @@ function rover.on_punch(self, puncher, time_from_last_punch,
 			local leftover = inv:add_item("main", "rocket:rover")
 			-- If no room in inventory add a replacement rover to the world
 			if not leftover:is_empty() then
-				minetest.add_item(self.object:getpos(), leftover)
+--				minetest.add_item(self.object:getpos(), leftover)
+				minetest.add_item(self.object:get_pos(), leftover)
 			end
 		end
 		-- Delay remove to ensure player is detached
@@ -172,20 +194,23 @@ function rover:on_step(dtime)
 		ctrl = self.driver:get_player_control()
 	end
 	if (not ctrl or not (ctrl.up or ctrl.down)) and
-			vector.equals(self.object:getvelocity(), {x = 0, y = 0, z = 0}) then
+--			vector.equals(self.object:getvelocity(), {x = 0, y = 0, z = 0}) then
+			vector.equals(self.object:get_velocity(), {x = 0, y = 0, z = 0}) then
 		-- Either no driver or driver but no accelerator, and stationary
 		return
 	end
 
 	-- Touching ground?
-	local obj_pos = self.object:getpos()
+--	local obj_pos = self.object:getpos()
+	local obj_pos = self.object:get_pos()
 	obj_pos.y = obj_pos.y - 1.1
 	local under_pos = obj_pos
 	local node_under = minetest.get_node(under_pos)
 	local nodedef_under = minetest.registered_nodes[node_under.name]
 	local touch_ground = nodedef_under.walkable
 
-	local absv = get_v(self.object:getvelocity())
+--	local absv = get_v(self.object:getvelocity())
+	local absv = get_v(self.object:get_velocity())
 	self.v = absv * get_sign(self.v)
 
 	if touch_ground then
@@ -205,9 +230,11 @@ function rover:on_step(dtime)
 				turn = maxturn * (1 - (absv - 4) / 8)
 			end
 			if ctrl.left then
-				self.object:setyaw(self.object:getyaw() + turn)
+--				self.object:setyaw(self.object:getyaw() + turn)
+				self.object:set_yaw(self.object:get_yaw() + turn)
 			elseif ctrl.right then
-				self.object:setyaw(self.object:getyaw() - turn)
+--				self.object:setyaw(self.object:getyaw() - turn)
+				self.object:set_yaw(self.object:get_yaw() - turn)
 			end
 		end
 
@@ -215,7 +242,8 @@ function rover:on_step(dtime)
 		local s = get_sign(self.v)
 		self.v = self.v - 0.04 * s
 		if s ~= get_sign(self.v) then
-			self.object:setvelocity({x = 0, y = 0, z = 0})
+--			self.object:setvelocity({x = 0, y = 0, z = 0})
+			self.object:set_velocity({x = 0, y = 0, z = 0})
 			self.v = 0
 			return
 		end
@@ -227,37 +255,55 @@ function rover:on_step(dtime)
 	end
 
 	-- Vertical behaviour
-	local obj_pos = self.object:getpos()
+--	local obj_pos = self.object:getpos()
+	local obj_pos = self.object:get_pos()
 	obj_pos.y = obj_pos.y - 0.5
 	local nodedef_in = minetest.registered_nodes[minetest.get_node(obj_pos).name]
 	if nodedef_in.walkable then
 		-- In node, jump up
-		self.object:setacceleration({x = 0, y = 0, z = 0})
-		self.object:setvelocity(get_velocity(self.v,
-			self.object:getyaw(), math.max(absv / 2, 1)))
-		self.object:setpos(self.object:getpos())
+--		self.object:setacceleration({x = 0, y = 0, z = 0})
+		self.object:set_acceleration({x = 0, y = 0, z = 0})
+--		self.object:setvelocity(get_velocity(self.v,
+		self.object:set_velocity(get_velocity(self.v,
+--			self.object:getyaw(), math.max(absv / 2, 1)))
+			self.object:get_yaw(), math.max(absv / 2, 1)))
+--		self.object:setpos(self.object:getpos())
+		self.object:set_pos(self.object:get_pos())
 	else
 		if not touch_ground then
 			-- No node under, freefall
-			self.object:setacceleration({x = 0, y = -1.962, z = 0})
-			self.object:setvelocity(get_velocity(self.v, self.object:getyaw(),
-				self.object:getvelocity().y))
-			self.object:setpos(self.object:getpos())
+--			self.object:setacceleration({x = 0, y = -1.962, z = 0})
+			self.object:set_acceleration({x = 0, y = -1.962, z = 0})
+--			self.object:setvelocity(get_velocity(self.v, self.object:getyaw(),
+			self.object:set_velocity(get_velocity(self.v, self.object:get_yaw(),
+--				self.object:getvelocity().y))
+				self.object:get_velocity().y))
+--			self.object:setpos(self.object:getpos())
+			self.object:set_pos(self.object:get_pos())
 		else
 			-- Node under, on surface, check y velocity
-			if self.object:getvelocity().y < 0 then
+--			if self.object:getvelocity().y < 0 then
+			if self.object:get_velocity().y < 0 then
 				-- Landing on surface
-				local pos = self.object:getpos()
+--				local pos = self.object:getpos()
+				local pos = self.object:get_pos()
 				pos.y = math.floor(pos.y) + 0.5
-				self.object:setacceleration({x = 0, y = 0, z = 0})
-				self.object:setvelocity(get_velocity(self.v, self.object:getyaw(), 0))
-				self.object:setpos(pos)
+--				self.object:setacceleration({x = 0, y = 0, z = 0})
+				self.object:set_acceleration({x = 0, y = 0, z = 0})
+--				self.object:setvelocity(get_velocity(self.v, self.object:getyaw(), 0))
+				self.object:set_velocity(get_velocity(self.v, self.object:get_yaw(), 0))
+--				self.object:setpos(pos)
+				self.object:set_pos(pos)
 			else
 				-- On surface or jumping up through surface
-				self.object:setacceleration({x = 0, y = 0, z = 0})
-				self.object:setvelocity(get_velocity(self.v, self.object:getyaw(),
-					self.object:getvelocity().y))
-				self.object:setpos(self.object:getpos())
+--				self.object:setacceleration({x = 0, y = 0, z = 0})
+				self.object:set_acceleration({x = 0, y = 0, z = 0})
+--				self.object:setvelocity(get_velocity(self.v, self.object:getyaw(),
+				self.object:set_velocity(get_velocity(self.v, self.object:get_yaw(),
+--					self.object:getvelocity().y))
+					self.object:get_velocity().y))
+--				self.object:setpos(self.object:getpos())
+				self.object:set_pos(self.object:get_pos())
 			end
 			--if node_under.name == "rocket:dust" or
 			--		node_under.name == "rocket:dustprint1" or

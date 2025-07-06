@@ -69,7 +69,8 @@ function rocket.on_punch(self, puncher)
 				or not inv:contains_item("main", "rocket:rocket_item") then
 			local leftover = inv:add_item("main", "rocket:rocket_item")
 			if not leftover:is_empty() then
-				minetest.add_item(self.object:getpos(), leftover)
+--				minetest.add_item(self.object:getpos(), leftover)
+				minetest.add_item(self.object:get_pos(), leftover)
 			end
 		end
 		minetest.after(0.1, function()
@@ -91,9 +92,11 @@ function rocket.on_rightclick(self, clicker)
 		clicker:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
 		default.player_attached[name] = false
 		default.player_set_animation(clicker, "stand" , 30)
-		local pos = clicker:getpos()
+--		local pos = clicker:getpos()
+		local pos = clicker:get_pos()
 		minetest.after(0.1, function()
-			clicker:setpos(pos)
+--			clicker:setpos(pos)
+			clicker:set_pos(pos)
 		end)
 		minetest.sound_stop(self.soundThrust)
 	elseif not self.driver then
@@ -115,7 +118,8 @@ function rocket.on_rightclick(self, clicker)
 		--	default.player_set_animation(clicker, "sit" , 30)
 			default.player_set_animation(clicker, "stand" , 30)
 		end)
-		clicker:set_look_horizontal(self.object:getyaw())
+--		clicker:set_look_horizontal(self.object:getyaw())
+		clicker:set_look_horizontal(self.object:get_yaw())
 		self.soundThrust=minetest.sound_play({name="thrust"},{object = self.object, gain = 2.0, max_hear_distance = 4, loop = true,}) --old: max_hear_distance = 32
 		--minetest.sound_play({name="fire_fire.3.ogg"},{object = self.object, gain = 2.0, max_hear_distance = 32, loop = true,})
 		--[[
@@ -175,8 +179,10 @@ function rocket.on_step(self, dtime)
 				self.v = self.v - 0.1
 			end
 			if ctrl.left and ctrl.right and self.vy < 10 then --go into sideways rocket
-				local sideways_rocket = minetest.add_entity(self.object:getpos(), "rocket:sideways_rocket")
-				sideways_rocket:setyaw(self.object:getyaw())
+--				local sideways_rocket = minetest.add_entity(self.object:getpos(), "rocket:sideways_rocket")
+				local sideways_rocket = minetest.add_entity(self.object:get_pos(), "rocket:sideways_rocket")
+--				sideways_rocket:setyaw(self.object:getyaw())
+				sideways_rocket:set_yaw(self.object:get_yaw())
 				default.player_set_animation(driver_objref, "sit" , 30)
 				driver_objref:set_detach()
 				driver_objref:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
@@ -269,7 +275,8 @@ function rocket.on_step(self, dtime)
 				})
 			end
 			--Crash landing with a pilot
-			local p = self.object:getpos()
+--			local p = self.object:getpos()
+			local p = self.object:get_pos()
 			local vacuum = "air"
 			if(minetest.get_modpath("vacuum")) ~= nil then
 				vacuum = "vacuum:vacuum"
@@ -278,7 +285,8 @@ function rocket.on_step(self, dtime)
 			if(minetest.get_modpath("other_worlds")) ~= nil then
 				atmos = ":asteriod:atmos"
 			end
-			local p1 = self.object:getpos()
+--			local p1 = self.object:getpos()
+			local p1 = self.object:get_pos()
 			p1.y = p1.y - 1
 			if minetest.get_node(p1).name ~= "air" and minetest.get_node(p1).name ~= vacuum and minetest.get_node(p1).name ~= atmos and self.vy < -10 then
 				tnt.boom(p, {
@@ -292,9 +300,11 @@ function rocket.on_step(self, dtime)
 				driver_objref:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
 			end
 
-			local p2 = self.object:getpos()
+--			local p2 = self.object:getpos()
+			local p2 = self.object:get_pos()
 			p2.y = p2.y + 6
-			local p3 = self.object:getpos()
+--			local p3 = self.object:getpos()
+			local p3 = self.object:get_pos()
 			p3.y = p3.y + 4
 			if minetest.get_node(p2).name ~= "air" and minetest.get_node(p2).name ~= vacuum and minetest.get_node(p1).name ~= atmos and self.vy > 10 then
 				tnt.boom(p3, {
@@ -356,7 +366,8 @@ function rocket.on_step(self, dtime)
 
 	-- Early return for stationary vehicle
 	if self.v == 0 and self.rot == 0 and self.vy == 0 then
-		self.object:setpos(self.object:getpos())
+--		self.object:setpos(self.object:getpos())
+		self.object:set_pos(self.object:get_pos())
 		return
 	end
 
@@ -395,7 +406,8 @@ function rocket.on_step(self, dtime)
 	local new_acce = {x = 0, y = 0, z = 0}
 	-- Bouyancy in liquids
 	--[[
-	local p = self.object:getpos()
+--	local p = self.object:getpos()
+	local p = self.object:get_pos()
 	p.y = p.y - 1.5
 	local def = minetest.registered_nodes[minetest.get_node(p).name]
 	if def and (def.liquidtype == "source" or def.liquidtype == "flowing") then
@@ -404,7 +416,8 @@ function rocket.on_step(self, dtime)
 	]]
 
 	--Crash landing without a pilot
-	local p = self.object:getpos()
+--	local p = self.object:getpos()
+	local p = self.object:get_pos()
 	local vacuum = "air"
 	if(minetest.get_modpath("vacuum")) ~= nil then
 		vacuum = "vacuum:vacuum"
@@ -413,7 +426,8 @@ function rocket.on_step(self, dtime)
 	if(minetest.get_modpath("other_worlds")) ~= nil then
 		atmos = ":asteriod:atmos"
 	end
-	local p1 = self.object:getpos()
+--	local p1 = self.object:getpos()
+	local p1 = self.object:get_pos()
 	p1.y = p1.y - 1
 	if minetest.get_node(p1).name ~= "air" and minetest.get_node(p1).name ~= vacuum and minetest.get_node(p1).name ~= atmos and self.vy < -10 then
 		tnt.boom(p, {
@@ -426,9 +440,11 @@ function rocket.on_step(self, dtime)
 		self.object:remove()
 	end
 
+--	local p2 = self.object:get_pos()
 	local p2 = self.object:getpos()
 	p2.y = p2.y + 6
-	local p3 = self.object:getpos()
+--	local p3 = self.object:getpos()
+	local p3 = self.object:get_pos()
 	p3.y = p3.y + 4
 	if minetest.get_node(p2).name ~= "air" and minetest.get_node(p2).name ~= vacuum and minetest.get_node(p1).name ~= atmos and self.vy > 10 then
 		tnt.boom(p3, {
@@ -442,10 +458,14 @@ function rocket.on_step(self, dtime)
 	end
 
 
-	self.object:setpos(self.object:getpos())
-	self.object:setvelocity(get_velocity(self.v, self.object:getyaw(), self.vy))
-	self.object:setacceleration(new_acce)
-	self.object:setyaw(self.object:getyaw() + (1 + dtime) * self.rot)
+--	self.object:setpos(self.object:getpos())
+	self.object:set_pos(self.object:get_pos())
+--	self.object:setvelocity(get_velocity(self.v, self.object:getyaw(), self.vy))
+	self.object:set_velocity(get_velocity(self.v, self.object:get_yaw(), self.vy))
+--	self.object:setacceleration(new_acce)
+	self.object:set_acceleration(new_acce)
+--	self.object:setyaw(self.object:getyaw() + (1 + dtime) * self.rot)
+	self.object:set_yaw(self.object:get_yaw() + (1 + dtime) * self.rot)
 end
 
 minetest.register_entity("rocket:rocket", rocket)
@@ -496,7 +516,8 @@ function sideways_rocket.on_punch(self, puncher)
 				or not inv:contains_item("main", "rocket:rocket_item") then
 			local leftover = inv:add_item("main", "rocket:rocket_item")
 			if not leftover:is_empty() then
-				minetest.add_item(self.object:getpos(), leftover)
+--				minetest.add_item(self.object:getpos(), leftover)
+				minetest.add_item(self.object:get_pos(), leftover)
 			end
 		end
 		minetest.after(0.1, function()
@@ -517,9 +538,10 @@ function sideways_rocket.on_rightclick(self, clicker)
 		clicker:set_detach()
 		default.player_attached[name] = false
 		default.player_set_animation(clicker, "stand" , 30)
-		local pos = clicker:getpos()
+--		local pos = clicker:getpos()
+		local pos = clicker:get_pos()
 		minetest.after(0.1, function()
-			clicker:setpos(pos)
+			clicker:set_pos(pos)
 		end)
 		minetest.sound_stop(self.soundThrust)
 	elseif not self.driver then
@@ -539,7 +561,8 @@ function sideways_rocket.on_rightclick(self, clicker)
 		minetest.after(0.2, function()
 			default.player_set_animation(clicker, "sit" , 30)
 		end)
-		clicker:set_look_horizontal(self.object:getyaw())
+--		clicker:set_look_horizontal(self.object:getyaw())
+		clicker:set_look_horizontal(self.object:get_yaw())
 		self.soundThrust=minetest.sound_play({name="thrust"},{object = self.object, gain = 2.0, max_hear_distance = 4, loop = true,})--old: max_hear_distance = 32
 	end
 end
@@ -602,8 +625,10 @@ function sideways_rocket.on_step(self, dtime)
 				})
 			end
 			if ctrl.left and ctrl.right and self.v < 10 then --go into vertical rocket
-				local rocket = minetest.add_entity(self.object:getpos(), "rocket:rocket")
-				rocket:setyaw(self.object:getyaw())
+--				local rocket = minetest.add_entity(self.object:getpos(), "rocket:rocket")
+				local rocket = minetest.add_entity(self.object:get_pos(), "rocket:rocket")
+--				rocket:setyaw(self.object:getyaw())
+				rocket:set_yaw(self.object:get_yaw())
 				default.player_set_animation(driver_objref, "stand" , 30)
 				driver_objref:set_detach()
 				driver_objref:set_eye_offset({x=0,y=20,z=0},{x=0,y=0,z=0})
@@ -623,7 +648,8 @@ function sideways_rocket.on_step(self, dtime)
 			end
 			
 			--Crashing with a pilot
-			local p = self.object:getpos()
+--			local p = self.object:getpos()
+			local p = self.object:get_pos()
 			local vacuum = "air"
 			if(minetest.get_modpath("vacuum")) ~= nil then
 				vacuum = "vacuum:vacuum"
@@ -632,13 +658,17 @@ function sideways_rocket.on_step(self, dtime)
 			if(minetest.get_modpath("other_worlds")) ~= nil then
 				atmos = ":asteriod:atmos"
 			end
-			local p1 = self.object:getpos()
+--			local p1 = self.object:getpos()
+			local p1 = self.object:get_pos()
 			p1.x = p1.x + 2
-			local p2 = self.object:getpos()
+--			local p2 = self.object:getpos()
+			local p2 = self.object:get_pos()
 			p2.x = p2.x - 2
-			local p3 = self.object:getpos()
+--			local p3 = self.object:getpos()
+			local p3 = self.object:get_pos()
 			p3.z = p3.z + 2
-			local p4 = self.object:getpos()
+--			local p4 = self.object:getpos()
+			local p4 = self.object:get_pos()
 			p4.x = p4.x - 2
 			if minetest.get_node(p1).name ~= "air" and minetest.get_node(p1).name ~= vacuum and minetest.get_node(p1).name ~= atmos and self.v > 10 then
 				minetest.sound_stop(self.soundThrust)
@@ -725,7 +755,8 @@ function sideways_rocket.on_step(self, dtime)
 
 	-- Early return for stationary vehicle
 	if self.v == 0 and self.rot == 0 and self.vy == 0 then
-		self.object:setpos(self.object:getpos())
+--		self.object:setpos(self.object:getpos())
+		self.object:set_pos(self.object:get_pos())
 		return
 	end
 
@@ -764,7 +795,8 @@ function sideways_rocket.on_step(self, dtime)
 	local new_acce = {x = 0, y = 0, z = 0}
 	-- Bouyancy in liquids
 	--[[
-	local p = self.object:getpos()
+--	local p = self.object:getpos()
+	local p = self.object:get_pos()
 	p.y = p.y - 1.5
 	local def = minetest.registered_nodes[minetest.get_node(p).name]
 	if def and (def.liquidtype == "source" or def.liquidtype == "flowing") then
@@ -773,7 +805,8 @@ function sideways_rocket.on_step(self, dtime)
 	]]
 
 	--Crashing without a pilot
-	local p = self.object:getpos()
+--	local p = self.object:getpos()
+	local p = self.object:get_pos()
 	local vacuum = "air"
 	if(minetest.get_modpath("vacuum")) ~= nil then
 		vacuum = "vacuum:vacuum"
@@ -782,13 +815,17 @@ function sideways_rocket.on_step(self, dtime)
 	if(minetest.get_modpath("other_worlds")) ~= nil then
 		atmos = ":asteriod:atmos"
 	end
-	local p1 = self.object:getpos()
+--	local p1 = self.object:getpos()
+	local p1 = self.object:get_pos()
 	p1.x = p1.x + 2
-	local p2 = self.object:getpos()
+--	local p2 = self.object:getpos()
+	local p2 = self.object:get_pos()
 	p2.x = p2.x - 2
-	local p3 = self.object:getpos()
+--	local p3 = self.object:getpos()
+	local p3 = self.object:get_pos()
 	p3.z = p3.z + 2
-	local p4 = self.object:getpos()
+--	local p4 = self.object:getpos()
+	local p4 = self.object:get_pos()
 	p4.x = p4.x - 2
 	if minetest.get_node(p1).name ~= "air" and minetest.get_node(p1).name ~= vacuum and minetest.get_node(p1).name ~= atmos and self.v > 10 then
 		minetest.sound_stop(self.soundThrust)
@@ -845,10 +882,14 @@ function sideways_rocket.on_step(self, dtime)
 	end
 
 
-	self.object:setpos(self.object:getpos())
-	self.object:setvelocity(get_velocity(self.v, self.object:getyaw(), self.vy))
-	self.object:setacceleration(new_acce)
-	self.object:setyaw(self.object:getyaw() + (1 + dtime) * self.rot)
+--	self.object:setpos(self.object:getpos())
+	self.object:set_pos(self.object:get_pos())
+--	self.object:setvelocity(get_velocity(self.v, self.object:getyaw(), self.vy))
+	self.object:set_velocity(get_velocity(self.v, self.object:get_yaw(), self.vy))
+--	self.object:setacceleration(new_acce)
+	self.object:set_acceleration(new_acce)
+--	self.object:setyaw(self.object:getyaw() + (1 + dtime) * self.rot)
+	self.object:set_yaw(self.object:get_yaw() + (1 + dtime) * self.rot)
 end
 
 minetest.register_entity("rocket:sideways_rocket", sideways_rocket)
@@ -883,7 +924,8 @@ minetest.register_craftitem("rocket:rocket_item", {
 			"rocket:rocket")
 		if rocket then
 			if placer then
-				rocket:setyaw(placer:get_look_horizontal())
+--				rocket:setyaw(placer:get_look_horizontal())
+				rocket:set_yaw(placer:get_look_horizontal())
 			end
 			local player_name = placer and placer:get_player_name() or ""
 			if not (creative and creative.is_enabled_for and
@@ -1014,7 +1056,8 @@ minetest.register_node("rocket:oil_source", {
 			backface_culling = false,
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	walkable = false,
 	pointable = false,
@@ -1058,7 +1101,8 @@ minetest.register_node("rocket:oil_flowing", {
 			},
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
 	walkable = false,
@@ -1137,7 +1181,8 @@ minetest.register_node("rocket:rocket_fuel_source", {
 			backface_culling = false,
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	walkable = false,
 	pointable = false,
@@ -1181,7 +1226,8 @@ minetest.register_node("rocket:rocket_fuel_flowing", {
 			},
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
 	walkable = false,

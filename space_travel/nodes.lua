@@ -1,3 +1,11 @@
+-- Required wrapper to allow customization of default.after_place_leaves
+local function after_place_leaves(...)
+	return default.after_place_leaves(...)
+end
+
+-- New maximum value for .light_source (original value of 15 generates a warning)
+local max_light = 14
+
 --Nodes
 
 --Space lava (lava in space that is immune to vacuum)
@@ -238,7 +246,8 @@ minetest.register_node("space_travel:europa_water_source", {
 			backface_culling = false,
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	walkable = false,
 	pointable = false,
@@ -282,7 +291,8 @@ minetest.register_node("space_travel:europa_water_flowing", {
 			},
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
 	walkable = false,
@@ -905,7 +915,8 @@ minetest.register_node("space_travel:venus_vapor_spout", {
 	walkable = false,
 	paramtype = "light",
 	sunlight_propagates = true,
-	light_source = 15,
+--	light_source = 15,
+	light_source = max_light,
 })
 
 minetest.register_node("space_travel:venus_volcano", {
@@ -918,7 +929,8 @@ minetest.register_node("space_travel:venus_volcano", {
 	walkable = false,
 	paramtype = "light",
 	sunlight_propagates = true,
-	light_source = 15,
+--	light_source = 15,
+	light_source = max_light,
 })
 
 minetest.register_node("space_travel:venus_stone_iron_ore", {
@@ -1013,7 +1025,8 @@ minetest.register_node("space_travel:sulfuric_acid_source", {
 			backface_culling = false,
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	light_source = 6,
 	walkable = false,
@@ -1060,7 +1073,8 @@ minetest.register_node("space_travel:sulfuric_acid_flowing", {
 			},
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	light_source = 6,
 	paramtype2 = "flowingliquid",
@@ -1196,7 +1210,8 @@ minetest.register_node("space_travel:io_volcano", {
 	walkable = false,
 	paramtype = "light",
 	sunlight_propagates = true,
-	light_source = 15,
+--	light_source = 15,
+	light_source = max_light,
 })
 
 minetest.register_node("space_travel:io_stone_iron_ore", {
@@ -1322,7 +1337,8 @@ minetest.register_node("space_travel:liquid_hydrocarbon_source", {
 			backface_culling = false,
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	walkable = false,
 	pointable = false,
@@ -1367,7 +1383,8 @@ minetest.register_node("space_travel:liquid_hydrocarbon_flowing", {
 			},
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
 	walkable = false,
@@ -1404,7 +1421,8 @@ minetest.register_node("space_travel:titan_alien_crystal", {
     tiles = {"space_travel_titan_alien_crystal.png"},
 	inventory_image = "space_travel_titan_alien_crystal_item.png",
     --wield_image = "titan_moon_alien_crystal_item.png",
-	use_texture_alpha = true,
+--	use_texture_alpha = true,
+	use_texture_alpha = "clip",
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -1930,7 +1948,8 @@ minetest.register_node("space_travel:minerva_water_source", {
 			backface_culling = false,
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	walkable = false,
 	pointable = false,
@@ -1974,7 +1993,8 @@ minetest.register_node("space_travel:minerva_water_flowing", {
 			},
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
 	walkable = false,
@@ -2294,7 +2314,8 @@ minetest.register_node("space_travel:bacchus_water_source", {
 			backface_culling = false,
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	walkable = false,
 	pointable = false,
@@ -2338,7 +2359,8 @@ minetest.register_node("space_travel:bacchus_water_flowing", {
 			},
 		},
 	},
-	alpha = 160,
+--	alpha = 160,
+    use_texture_alpha = "blend",
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
 	walkable = false,
@@ -2756,7 +2778,8 @@ minetest.register_node("space_travel:solar_mese_block", {
 	is_ground_content = false,
 	groups = {cracky = 1, level = 2},
 	sounds = default.node_sound_stone_defaults(),
-	light_source = 15,
+--	light_source = 15,
+	light_source = max_light,
 })
 
 stairs.register_stair_and_slab(
@@ -2776,7 +2799,8 @@ minetest.register_node("space_travel:lava_crystal_block", {
 	is_ground_content = false,
 	groups = {cracky = 1, level = 2},
 	sounds = default.node_sound_stone_defaults(),
-	light_source = 15,
+--	light_source = 15,
+	light_source = max_light,
 })
 
 stairs.register_stair_and_slab(

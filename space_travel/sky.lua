@@ -329,7 +329,7 @@ minetest.register_globalstep(function(dtime)
             time = 0
             
             local name = player:get_player_name()
-            local pos = player:getpos()
+            local pos = player:get_pos()
             
             local day_time = nil
             --if minetest.get_timeofday()*24000 > 6000 and minetest.get_timeofday()*24000 <= 18000 then

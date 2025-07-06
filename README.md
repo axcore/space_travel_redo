@@ -21,7 +21,7 @@ For your convenience, this modpack contains all other dependencies:
 * Fly it into space
 * Warp to other other planets
 * Land on them
-* Explore them
+* Explore them (on foot, or in a rover)
 
 To land on other planets, do this:
 
@@ -47,11 +47,47 @@ Note that not all drives provide access to all planets; you'll have to start by 
 
 # Changes
 
-I made the following changes to the original code:
+I made the following changes to original code in various mods:
+
+**rocket/rocket.lua**
+
+*Replaced the deprecated "alpha = 160" field in various liquids
+
+*Replaced the deprecated :getyaw(), :getpos(), :setacceleration(), :setpos(), :setvelocity(), :setyaw() calls*
+
+**rocket/rover.lua**
+
+*Re-formatted the entity definition to use the expected .initial_properties field*
+
+*Replaced the deprecated :getvelocity(), :getyaw(), :getpos(), :setacceleration(), :setpos(), :setvelocity(), :setyaw() calls*
+
+**scifi_nodes/nodeboxes.lua**
+
+*Replaced the deprecated :getpos(), :setpos() calls*
+
+**space_travel/nodes.lua**
+
+*Leaves nodes referred to a non-existent (local) after_place_leaves() function; imported it from minetest_game*
+
+*Replaced invalid .light_source values of 15 with the engine maximum which is 14*
+
+*Replaced the deprecated "alpha = 160" field in various liquids*
+
+*Replaced the deprecated "use_texture_alpha = true" in the titan alien crystal*
 
 **space_travel/sky.lua:**
 
 *Updated calls to player:set_physics_override()*
+
+*Replaced call to deprecated function, player:getpos()*
+
+*Fixed Irrlicht PNG warnings for the following textures:*
+
+    space_travel_mercury_space_sky.png
+    space_travel_sedna_cobble.png
+    space_travel_sedna_dust.png
+    space_travel_sedna_gravel.png
+    space_travel_sedna_stone.png
 
 **spacesuit/**
 
@@ -59,6 +95,12 @@ I made the following changes to the original code:
 
 *Modified code in drowning.lua to enable/disable suffocation by using player:set_flags(), instead of by the old method*
 
+**vacuum/vacuum.lua**
+
+*Replaced the deprecated "alpha = 0.1" field in the vacuum:vacuum node*
+
 # Bugs
 
 When the player is "inside" the rocket, it appears to be transparent. I don't remember what the original behaviour was, so I have not attempted to "fix" it.
+
+When placed on the ground, the rover is 1 block higher than it should be. The player's eye level is possibly not in the optimal position. Once again, not remembering the original behaviour, I have not attempted to "fix" it.
