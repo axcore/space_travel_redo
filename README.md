@@ -45,6 +45,11 @@ To "wear" the spacesuit, you may need an inventory mod that's compatiable with 3
 
 Note that not all drives provide access to all planets; you'll have to start by crafting a **Tier 1 Basic Space Drive**, and work your way up from there.
 
+# New media licences
+
+*/rocket/textures/rover_inv.png* : Public domain.
+
+
 # Changes
 
 I made the following changes to original code in various mods:
@@ -61,9 +66,23 @@ I made the following changes to original code in various mods:
 
 *Replaced the deprecated :getvelocity(), :getyaw(), :getpos(), :setacceleration(), :setpos(), :setvelocity(), :setyaw() calls*
 
+*Added a craft recipe for the rover; it's not very imaginative, but better than nothing*
+
+*Added a new inventory image for the rover*
+
 **scifi_nodes/nodeboxes.lua**
 
 *Replaced the deprecated :getpos(), :setpos() calls*
+
+**space_travel/**
+
+*Fixed Irrlicht PNG warnings for the following textures:*
+
+    space_travel_mercury_space_sky.png
+    space_travel_sedna_cobble.png
+    space_travel_sedna_dust.png
+    space_travel_sedna_gravel.png
+    space_travel_sedna_stone.png
 
 **space_travel/nodes.lua**
 
@@ -81,13 +100,6 @@ I made the following changes to original code in various mods:
 
 *Replaced call to deprecated function, player:getpos()*
 
-*Fixed Irrlicht PNG warnings for the following textures:*
-
-    space_travel_mercury_space_sky.png
-    space_travel_sedna_cobble.png
-    space_travel_sedna_dust.png
-    space_travel_sedna_gravel.png
-    space_travel_sedna_stone.png
 
 **spacesuit/**
 

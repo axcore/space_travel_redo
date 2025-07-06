@@ -73,7 +73,8 @@ local rover = {
 
 minetest.register_craftitem("rocket:rover", {
 	description = "Rover",
-	inventory_image = "rover.png",--"rocket_rover_front.png",
+--	inventory_image = "rover.png",--"rocket_rover_front.png",
+	inventory_image = "rover_inv.png",
 	--wield_scale = {x = 2, y = 2, z = 2},
 
 	on_place = function(itemstack, placer, pointed_thing)
@@ -103,6 +104,15 @@ minetest.register_craftitem("rocket:rover", {
 	end,
 })
 
+minetest.register_craft({
+    type = "shaped",
+    output = "rocket:rover",
+    recipe = {
+        {"default:glass", "default:steel_ingot", "default:steel_ingot"},
+        {"default:steel_ingot", "default:steelblock", "default:steel_ingot"},
+        {"space_travel:lava_crystal", "space_travel:lunar_spinel_gem", "rocket:rocket_thruster"},
+    }
+})
 
 -- Register entity
 
