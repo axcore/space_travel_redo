@@ -17,7 +17,7 @@ For your convenience, this modpack contains all other dependencies:
 
 **THE ORIGINAL MOD WAS UNFINISHED**. Don't expect a complete space-travel adventure. However, you can do all of the things that you could in the original mod, before engine changes made it unplayable:
 
-* Build a rocket
+* Build a space shuttle
 * Fly it into space
 * Warp to other other planets
 * Land on them
@@ -34,7 +34,7 @@ To land on other planets, do this:
 * Continue holding the "JUMP" key until you reach space
 * While wielding the drive, left-click to open the planet selection menu
 * Choose a new planet
-* Let the rocket descend to the planet's surface
+* Let the space shuttle descend to the planet's surface
 * Right-click to disembark the space shuttle
 
 To "wear" the spacesuit, you may need an inventory mod that's compatiable with 3d_armor. [unified_inventory](https://github.com/minetest-mods/unified_inventory) is suggested:
@@ -101,6 +101,6 @@ I made the following changes to original code in various mods:
 
 # Bugs
 
-When the player is "inside" the rocket, it appears to be transparent. I don't remember what the original behaviour was, so I have not attempted to "fix" it.
+When the player is "inside" the space shuttle, it appears to be transparent. I don't remember what the original behaviour was, so I have not attempted to "fix" it.
 
 When placed on the ground, the rover is 1 block higher than it should be. The player's eye level is possibly not in the optimal position. Once again, not remembering the original behaviour, I have not attempted to "fix" it.
