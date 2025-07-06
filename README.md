@@ -51,7 +51,7 @@ I made the following changes to original code in various mods:
 
 **rocket/rocket.lua**
 
-*Replaced the deprecated "alpha = 160" field in various liquids
+*Replaced the deprecated "alpha = 160" field in various liquids*
 
 *Replaced the deprecated :getyaw(), :getpos(), :setacceleration(), :setpos(), :setvelocity(), :setyaw() calls*
 
