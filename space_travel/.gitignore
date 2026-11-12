@@ -11,6 +11,7 @@ luac.out
 *.o
 *.os
 *.ko
+*.obj
 *.elf
 
 # Precompiled Headers

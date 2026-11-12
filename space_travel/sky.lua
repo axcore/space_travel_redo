@@ -264,7 +264,8 @@ local ourea_sky = {
 }
 
 local caelus_space = {
-    "space_travel_caelus_space_sky_pos_y.png^[transform3", -- +y (top)
+--    "space_travel_caelus_space_sky_pos_y.png^[transform3", -- +y (top)
+    "space_travel_caelus_space_sky_neg_y.png^[transform3", -- +y (top)
     "space_travel_caelus_space_sky_neg_y.png^[transform1", -- -y (bottom)
     "space_travel_caelus_space_sky_pos_z.png", -- +z (back)
     "space_travel_caelus_space_sky_neg_z.png", -- -z (front

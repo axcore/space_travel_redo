@@ -70,6 +70,10 @@ I made the following changes to original code in various mods:
 
 *Added a new inventory image for the rover*
 
+**rocket/.gitignore**
+
+*Removed the ignore rule for .obj files, as it prevented the github upload for the rocket models*
+
 **scifi_nodes/nodeboxes.lua**
 
 *Replaced the deprecated :getpos(), :setpos() calls*
@@ -100,6 +104,7 @@ I made the following changes to original code in various mods:
 
 *Replaced call to deprecated function, player:getpos()*
 
+*The skybox texture space_travel_caelus_space_sky_pos_y.png is missing, even in the original mod; in the code, substituted it for the opposite texture. The skybox looks a bit weird, but not as weird as a Minetest error*
 
 **spacesuit/**
 
